@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PetManager;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject Popup_Panel;
+    public GameObject popup_Panel;
 
     public GameObject foodOptions;
     public GameObject sleepOptions;
@@ -17,7 +18,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        Popup_Panel.SetActive(false);
+        popup_Panel.SetActive(false);
     }
 
     // Ana UI Butonlarý
@@ -38,11 +39,14 @@ public class UIManager : MonoBehaviour
 
     public void OnHealthButtonClicked()
     {
+        PetManager.Instance.Feed(FoodType.Meal);
+        PetManager.Instance.hygiene += 50f;
         OpenPopup(healthOptions);
     }
 
     public void OnHygieneButtonClicked()
     {
+        PetManager.Instance.Clean();
         OpenPopup(hygieneOptions);
     }
 
@@ -65,7 +69,7 @@ public class UIManager : MonoBehaviour
     // Genel Popup Açýcý
     private void OpenPopup(GameObject optionsGroup)
     {
-        Popup_Panel.SetActive(true);
+        popup_Panel.SetActive(true);
 
         // Bütün alt gruplarý kapat
         foodOptions.SetActive(false);
@@ -83,38 +87,40 @@ public class UIManager : MonoBehaviour
 
     // Þu anda Popup paneli içindeki özel butonlara baðlanacak örnek fonksiyonlar:
 
-    public void OnMealButtonClicked()
-    {
-        Debug.Log("Meal seçildi, hunger azalýyor.");
-        // Hunger'ý azalt
-        Popup_Panel.SetActive(false);
-    }
-
-    public void OnSnackButtonClicked()
-    {
-        Debug.Log("Snack seçildi, hunger artýyor ama weight de artýyor!");
-        // Hunger'ý azalt ama weight artýr
-        Popup_Panel.SetActive(false);
-    }
+ 
 
     public void OnLightOnButtonClicked()
     {
         Debug.Log("Iþýk açýldý.");
         // Iþýðý aç
-        Popup_Panel.SetActive(false);
+        popup_Panel.SetActive(false);
     }
 
     public void OnLightOffButtonClicked()
     {
         Debug.Log("Iþýk kapandý.");
         // Iþýðý kapat
-        Popup_Panel.SetActive(false);
+        popup_Panel.SetActive(false);
     }
 
+    public void OnMealButtonClicked()
+    {
+        PetManager.Instance.Feed(FoodType.Meal);
+        Debug.Log("Ana yemek verildi. Açlýk azaltýldý.");
+        popup_Panel.SetActive(false);
+    }
 
+    public void OnSnackButtonClicked()
+    {
+        PetManager.Instance.Feed(FoodType.Snack);
+        Debug.Log("Atýþtýrmalýk verildi. Açlýk ve mutluluk arttý!");
+        popup_Panel.SetActive(false);
+    }
 
-
-
+    public void CloseAllPanels()
+    {
+        popup_Panel.SetActive(false);
+    }
 
 
 
