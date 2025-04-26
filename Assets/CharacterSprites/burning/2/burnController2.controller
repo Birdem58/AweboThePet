@@ -20,7 +20,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 906dac6f43ad64142b2b982ae315efca, type: 2}
+  m_Motion: {fileID: 7400000, guid: eeb33fe6a786c7543bb782d747b35af3, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -47,7 +47,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 43dac056188d2b84e8c7ce08b3fad239, type: 2}
+  m_Motion: {fileID: 7400000, guid: 770678371c2ead7488973256667c2cab, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -87,7 +87,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: burnController
+  m_Name: burnController2
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Extinguish
@@ -177,7 +177,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 8eb8d47601db588428b9a31c8585aeb0, type: 2}
+  m_Motion: {fileID: 7400000, guid: 353a6967cb512354c9e4e3f4d9cc2124, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
