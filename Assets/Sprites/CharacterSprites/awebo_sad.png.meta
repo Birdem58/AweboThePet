@@ -100,12 +100,12 @@ TextureImporter:
       name: awebo_sad_0
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 0
-        width: 49
-        height: 47
+        width: 50
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -121,12 +121,12 @@ TextureImporter:
       name: awebo_sad_1
       rect:
         serializedVersion: 2
-        x: 51
+        x: 50
         y: 0
-        width: 49
-        height: 47
+        width: 50
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -142,12 +142,12 @@ TextureImporter:
       name: awebo_sad_2
       rect:
         serializedVersion: 2
-        x: 101
+        x: 100
         y: 0
-        width: 49
-        height: 47
+        width: 50
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -160,36 +160,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: awebo_sad_3
-      rect:
-        serializedVersion: 2
-        x: 151
-        y: 0
-        width: 49
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6516918782ad5094aa7c8941fe5e3e7e
-      internalID: 1095484075
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: awebo_sad_4
       rect:
         serializedVersion: 2
         x: 201
         y: 0
-        width: 49
-        height: 47
+        width: 50
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -207,10 +186,10 @@ TextureImporter:
         serializedVersion: 2
         x: 251
         y: 0
-        width: 49
-        height: 47
+        width: 50
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -228,10 +207,10 @@ TextureImporter:
         serializedVersion: 2
         x: 301
         y: 0
-        width: 49
-        height: 47
+        width: 50
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -244,36 +223,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: awebo_sad_7
-      rect:
-        serializedVersion: 2
-        x: 351
-        y: 0
-        width: 49
-        height: 47
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7941ddd592b300b409dc6239b69b2806
-      internalID: 1736483433
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: awebo_sad_8
       rect:
         serializedVersion: 2
-        x: 401
+        x: 400
         y: 0
-        width: 49
-        height: 49
+        width: 50
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -289,12 +247,12 @@ TextureImporter:
       name: awebo_sad_9
       rect:
         serializedVersion: 2
-        x: 451
+        x: 450
         y: 0
-        width: 49
-        height: 47
+        width: 50
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -310,12 +268,12 @@ TextureImporter:
       name: awebo_sad_10
       rect:
         serializedVersion: 2
-        x: 501
+        x: 500
         y: 0
-        width: 49
-        height: 47
+        width: 50
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -331,12 +289,12 @@ TextureImporter:
       name: awebo_sad_11
       rect:
         serializedVersion: 2
-        x: 551
+        x: 550
         y: 0
-        width: 49
-        height: 47
+        width: 50
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -352,12 +310,12 @@ TextureImporter:
       name: awebo_sad_12
       rect:
         serializedVersion: 2
-        x: 601
+        x: 600
         y: 0
-        width: 49
-        height: 47
+        width: 50
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -373,12 +331,12 @@ TextureImporter:
       name: awebo_sad_13
       rect:
         serializedVersion: 2
-        x: 651
+        x: 650
         y: 0
-        width: 49
-        height: 47
+        width: 50
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -394,12 +352,12 @@ TextureImporter:
       name: awebo_sad_14
       rect:
         serializedVersion: 2
-        x: 701
+        x: 700
         y: 0
-        width: 49
-        height: 47
+        width: 50
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -415,12 +373,12 @@ TextureImporter:
       name: awebo_sad_15
       rect:
         serializedVersion: 2
-        x: 751
+        x: 750
         y: 0
-        width: 49
-        height: 47
+        width: 50
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -436,12 +394,12 @@ TextureImporter:
       name: awebo_sad_16
       rect:
         serializedVersion: 2
-        x: 801
+        x: 800
         y: 0
-        width: 49
-        height: 47
+        width: 50
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -454,120 +412,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: awebo_sad_17
-      rect:
-        serializedVersion: 2
-        x: 851
-        y: 0
-        width: 49
-        height: 47
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 69fd8cd285c72f849a1cc9e695eea66c
-      internalID: 1440197538
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: awebo_sad_18
-      rect:
-        serializedVersion: 2
-        x: 901
-        y: 0
-        width: 49
-        height: 47
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 62e14fab3d1324c4cb2f791ec93dd4c8
-      internalID: -1358209539
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: awebo_sad_19
-      rect:
-        serializedVersion: 2
-        x: 951
-        y: 0
-        width: 49
-        height: 47
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: da95de202421db544804fc16f9b3cf4c
-      internalID: 1369658384
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: awebo_sad_20
-      rect:
-        serializedVersion: 2
-        x: 1001
-        y: 0
-        width: 49
-        height: 47
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 07329ef9d51a60a4cb6cd8c20863977c
-      internalID: -370272591
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: awebo_sad_21
-      rect:
-        serializedVersion: 2
-        x: 1051
-        y: 0
-        width: 49
-        height: 47
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a21844778a7795d42999e80332788d84
-      internalID: -533160333
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: awebo_sad_22
       rect:
         serializedVersion: 2
-        x: 1101
+        x: 1100
         y: 0
-        width: 49
-        height: 49
+        width: 50
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -583,12 +436,12 @@ TextureImporter:
       name: awebo_sad_23
       rect:
         serializedVersion: 2
-        x: 1151
+        x: 1150
         y: 0
-        width: 49
-        height: 48
+        width: 50
+        height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
