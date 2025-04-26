@@ -5,11 +5,19 @@ using UnityEngine;
 
 public class Collecible : MonoBehaviour
 {
+    private MinigameController minigameController;
+
+    private void Start()
+    {
+        minigameController = FindObjectOfType<MinigameController>();
+    }
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            // Burada skor artýrma iþlemi yapýlabilir
+            ScoreManager.instance.AddScore(10);
+            minigameController.CollectibleCollected();
+
             Debug.Log("Collected!");
 
             // Collectible'ý yok et

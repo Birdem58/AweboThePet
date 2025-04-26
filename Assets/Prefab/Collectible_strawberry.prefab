@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3628891484595218072}
   - component: {fileID: 5503442247609002235}
   - component: {fileID: 278497454119834928}
+  - component: {fileID: 5859011737773688008}
   m_Layer: 0
   m_Name: Collectible_strawberry
   m_TagString: Untagged
@@ -143,3 +144,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9b49de9549fb9940a8bb20795912e80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &5859011737773688008
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7019794358288083095}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 81ed8177fa3588744a873193a84d4b4a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
