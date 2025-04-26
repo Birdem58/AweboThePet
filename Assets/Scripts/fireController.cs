@@ -30,6 +30,7 @@ public class fireController : MonoBehaviour
     {
         if (!isExtinguished)
         {
+            PetManager.Instance.ExtinguishFire(gameObject);
             animator.SetTrigger("Extinguish");
             isExtinguished = true;
             isEnding = true;

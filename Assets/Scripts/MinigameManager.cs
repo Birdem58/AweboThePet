@@ -1,19 +1,16 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class MinigameManager : MonoBehaviour
 {
-    // Singleton
     public static MinigameManager Instance { get; private set; }
 
     [Header("UI Elements")]
     public GameObject minigameCanvas;
-    public Text scoreText;
-    public Text gameOverText;
-    public Button retryButton;
+    public TMP_Text scoreText;
 
     [Header("Game Objects")]
-    public GameObject aweboPlayer;
+    public GameObject MinigameEnv;
     public Transform obstacleSpawnPoint;
     public GameObject[] obstaclePrefabs;
 
@@ -22,21 +19,26 @@ public class MinigameManager : MonoBehaviour
     public float spawnInterval = 2f;
     public float jumpForce = 8f;
 
-    // Oyun durumu
     private int currentScore = 0;
     private bool isMinigameActive = false;
     private Rigidbody2D aweboRb;
 
     void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Sahne geçiþlerinde koru
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     void Start()
     {
-        aweboRb = aweboPlayer.GetComponent<Rigidbody2D>();
-        retryButton.onClick.AddListener(RestartMinigame);
+        aweboRb = MinigameEnv.GetComponent<Rigidbody2D>();
         InitializeMinigame();
     }
 
@@ -49,13 +51,10 @@ public class MinigameManager : MonoBehaviour
         }
     }
 
-    #region Minigame Setup
     public void InitializeMinigame()
     {
         minigameCanvas.SetActive(false);
-        aweboPlayer.SetActive(false);
-        gameOverText.gameObject.SetActive(false);
-        retryButton.gameObject.SetActive(false);
+        MinigameEnv.SetActive(false);
     }
 
     public void StartMinigame()
@@ -63,21 +62,23 @@ public class MinigameManager : MonoBehaviour
         // Ana oyunu duraklat
         PetManager.Instance.isGamePaused = true;
 
-        // Mini oyunu baþlat
+        // Mini oyunu aktif et
         isMinigameActive = true;
         minigameCanvas.SetActive(true);
-        aweboPlayer.SetActive(true);
-        aweboPlayer.transform.position = new Vector2(-6f, -1.5f);
+        MinigameEnv.SetActive(true);
+        MinigameEnv.transform.position = new Vector2(-6f, -1.5f);
 
+        // Skor ve engelleri sýfýrla
         currentScore = 0;
         scoreText.text = "Score: 0";
+        ClearObstacles();
 
         CancelInvoke();
-        InvokeRepeating("SpawnObstacle", 1f, spawnInterval);
-    }
-    #endregion
+        InvokeRepeating(nameof(SpawnObstacle), 1f, spawnInterval);
 
-    #region Gameplay Mechanics
+        Debug.Log("Mini oyun baþladý!"); // Log kontrolü
+    }
+
     void HandleInput()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -96,7 +97,6 @@ public class MinigameManager : MonoBehaviour
             obstacleSpawnPoint.position,
             Quaternion.identity
         );
-
         obstacle.GetComponent<Rigidbody2D>().velocity = Vector2.left * obstacleSpeed;
     }
 
@@ -105,49 +105,34 @@ public class MinigameManager : MonoBehaviour
         currentScore += Mathf.RoundToInt(Time.unscaledDeltaTime * 10f);
         scoreText.text = $"Score: {currentScore}";
     }
-    #endregion
 
-    #region Game State Management
     public void EndMinigame(bool success)
     {
         isMinigameActive = false;
         CancelInvoke();
+        ClearObstacles();
 
-        // UI feedback
-        gameOverText.gameObject.SetActive(true);
-        retryButton.gameObject.SetActive(true);
-        gameOverText.text = success ? "Baþarýlý!" : "Kaybettin!";
-
-        // Pet'e skoru ilet
         if (success) PetManager.Instance.OnMinigameEnd(currentScore);
+        ExitToMainGame();
     }
 
-    public void RestartMinigame()
+    void ExitToMainGame()
     {
-        // Tüm engelleri temizle
+        PetManager.Instance.isGamePaused = false;
+        InitializeMinigame();
+        Debug.Log("Ana oyuna dönüldü!");
+    }
+
+    void ClearObstacles()
+    {
         foreach (GameObject obstacle in GameObject.FindGameObjectsWithTag("Obstacle"))
         {
             Destroy(obstacle);
         }
-
-        gameOverText.gameObject.SetActive(false);
-        retryButton.gameObject.SetActive(false);
-        StartMinigame();
     }
 
-    public void ExitToMainGame()
-    {
-        // Ana oyuna dön
-        PetManager.Instance.isGamePaused = false;
-        InitializeMinigame();
-    }
-    #endregion
-
-    #region Collision Handling
-    // Bu fonksiyon engellerin trigger'larýndan çaðrýlacak
     public void OnAweboCollision()
     {
         EndMinigame(false);
     }
-    #endregion
 }

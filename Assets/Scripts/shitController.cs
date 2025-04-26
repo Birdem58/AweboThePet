@@ -1,13 +1,15 @@
 using UnityEngine;
 
-public class ShitManager : MonoBehaviour
+public class ShitController : MonoBehaviour
 {
     private Animator animator;
     private bool isCleaning = false;
-
+    private float spawnTime;
+    public  bool penaltyApplied = false;
     void Start()
     {
         animator = GetComponent<Animator>();
+        PetManager.Instance.RegisterPoop(this);
     }
 
     void OnMouseDown()
@@ -20,8 +22,22 @@ public class ShitManager : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        // 5 saniyeyi geçerse ceza uygula (sadece 1 kez)
+        if (Time.time - spawnTime > 5f && !penaltyApplied)
+        {
+            PetManager.Instance.AddHygienePenalty();
+            penaltyApplied = true;
+        }
+    }
+
     void DestroyShit()
     {
         Destroy(gameObject);
+    }
+    void OnDestroy()
+    {
+        PetManager.Instance.RemovePoop(this); // PetManager'dan kaldýr
     }
 }
