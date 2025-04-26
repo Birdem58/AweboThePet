@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 46841bd5fd320c541bec08d3d044f497
+guid: 8dac779d011651b419fea7b6dad7aed3
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,13 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material.001
-    second: {fileID: 2100000, guid: bb808f0959d4ac14ca9a1a9127c661e0, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Tomogatchi
-    second: {fileID: 2100000, guid: 064399cd8d1f62f4dac005da25b5f5b7, type: 2}
+      name: Background
+    second: {fileID: 2100000, guid: 7e31930d73823ec49ba44fde712bd82f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
