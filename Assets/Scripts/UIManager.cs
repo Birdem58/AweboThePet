@@ -34,7 +34,10 @@ public class UIManager : MonoBehaviour
 
     public void OnFunButtonClicked()
     {
-        OpenPopup(funOptions);
+
+        PetManager.Instance.Play();
+        PetManager.Instance.energy -= 25f;
+       
     }
 
     public void OnHealthButtonClicked()

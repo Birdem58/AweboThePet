@@ -8,6 +8,7 @@ public class fireController : MonoBehaviour
     private bool isExtinguished = false;
     private bool isEnding = false;
     private float endTimer = 0f;
+    
 
     void Start()
     {

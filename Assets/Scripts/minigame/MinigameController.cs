@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MinigameController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class MinigameController : MonoBehaviour
     public AudioClip map2Music;
     public AudioClip collectSound;
     public GameObject scoreManager;
+
     public GameObject miniGameUI;
     public GameObject player;
     private int collectibleCount;
@@ -40,8 +42,10 @@ public class MinigameController : MonoBehaviour
 
     public void StartMinigame()
     {
+
+        
         int randomIndex = Random.Range(0, mapPrefabs.Length);
-        currentMap = Instantiate(mapPrefabs[randomIndex], Vector3.zero, Quaternion.identity);
+        currentMap = Instantiate(mapPrefabs[randomIndex], new Vector3(0,-77,0), Quaternion.identity);
 
         // Müzik seçimi
         if (randomIndex == 0)
@@ -60,6 +64,7 @@ public class MinigameController : MonoBehaviour
         collectibleCount = currentMap.GetComponentsInChildren<Collecible>().Length;
         player.SetActive(true); // Karakteri aktif et
         minigameRunning = true;
+        PetManager.Instance.ToggleCameraAndUi(false);
 
         // Skoru sýfýrlamak istersen buraya ekleyebilirsin
         // ScoreManager.instance.ResetScore(); gibi bir þey
@@ -78,6 +83,7 @@ public class MinigameController : MonoBehaviour
         if (success)
         {
             Debug.Log("Minigame Baþarýyla Tamamlandý!");
+            PetManager.Instance.happiness += 10f; 
             // Burada oyununa baþarý puaný veya ödül verebilirsin
         }
         else
@@ -93,7 +99,9 @@ public class MinigameController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         // Müziði durdur
         musicSource.Stop();
-
+        SceneManager.UnloadSceneAsync("minigame");
+        PetManager.Instance.ToggleCameraAndUi(true);
+        PetManager.Instance.isGamePaused = false;
         player.SetActive(false);
 
         // Haritayý yok et
@@ -101,6 +109,8 @@ public class MinigameController : MonoBehaviour
         {
             Destroy(currentMap);
         }
+
+        
     }
 
     public void CollectibleCollected()

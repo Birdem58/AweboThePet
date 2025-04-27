@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class PetManager : MonoBehaviour
 {
@@ -54,6 +56,9 @@ public class PetManager : MonoBehaviour
     private float baseHygieneDecay;
 
     public GameObject skullSprite;
+    [Header("Minigame Settings")]
+    public GameObject mainCamera;
+    public GameObject mainCanvas;
 
     [Header("Animation Settings")]
     public Animator petAnimator;
@@ -63,6 +68,39 @@ public class PetManager : MonoBehaviour
     public Vector2 xSpawnRange = new Vector2(-5f, 5f); // X spawn sınırları
     public Vector2 ySpawnRange = new Vector2(-3f, 3f); // Y spawn sınırları
     private List<GameObject> activeFires = new List<GameObject>();
+    [Header("Audio Settings")]
+    public AudioSource musicSource;
+    public AudioClip fireexting;
+    public AudioClip awebo; // Yeni AudioClip
+    public float minAweboInterval = 10f; // Minimum zaman aralığı
+    public float maxAweboInterval = 30f; // Maksimum zaman aralığı
+
+    void Start()
+    {
+        baseHygieneDecay = hygieneDecayRate;
+        skullSprite.SetActive(false);
+        StartCoroutine(PoopRoutine());
+        StartCoroutine(RandomMovementRoutine());
+        StartCoroutine(PlayAweboSoundRandomly()); // Awebo sesini çalan Coroutine başlatılıyor
+        UpdateTimeDisplay();
+       
+    }
+
+    IEnumerator PlayAweboSoundRandomly()
+    {
+        while (true)
+        {
+            // Rastgele bir bekleme süresi belirle
+            float randomInterval = Random.Range(minAweboInterval, maxAweboInterval);
+            yield return new WaitForSeconds(randomInterval);
+
+            // Awebo sesini çal
+            if (musicSource != null && awebo != null)
+            {
+                musicSource.PlayOneShot(awebo);
+            }
+        }
+    }
 
     // Zaman ve Durumlar
     [Header("Game Timing")]
@@ -78,9 +116,8 @@ public class PetManager : MonoBehaviour
     public TMP_Text timeText;
     public bool showDebugTime = true;
 
-    // Referanslar
-    [Header("References")]
-    public MinigameManager minigameManager;
+
+
 
     void Awake()
     {
@@ -91,14 +128,7 @@ public class PetManager : MonoBehaviour
         gameTime = (initialHour / 24f) * dayDuration;
     }
 
-    void Start()
-    {
-        baseHygieneDecay = hygieneDecayRate; 
-        skullSprite.SetActive(false); 
-        StartCoroutine(PoopRoutine());
-        StartCoroutine(RandomMovementRoutine());
-        UpdateTimeDisplay();
-    }
+   
 
     void Update()
     {
@@ -210,16 +240,19 @@ public class PetManager : MonoBehaviour
             happiness = Mathf.Clamp(happiness + happinessGain, 0, 100);
             activeFires.Remove(fire);
             Destroy(fire);
+
+            // fireexting sesini çal
+            if (musicSource != null && fireexting != null)
+            {
+                musicSource.PlayOneShot(fireexting);
+            }
         }
     }
-    #endregion
-
-    #region Routinler
     IEnumerator RandomMovementRoutine()
     {
         while (true)
         {
-            if (!isSleeping && !isGamePaused && !isMoving)
+            if (!isSleeping && !isGamePaused && !isMoving && !petAnimator.GetBool("isEating"))
             {
                 // Rastgele hedef pozisyon belirle
                 targetPosition = new Vector3(
@@ -234,7 +267,7 @@ public class PetManager : MonoBehaviour
                 // Hareketi gerçekleştir
                 while (Vector3.Distance(aweboPetObject.transform.position, targetPosition) > 0.1f)
                 {
-                    if (isSleeping || isGamePaused) break; // Beklenmedik durumlarda durdur
+                    if (isSleeping || isGamePaused || petAnimator.GetBool("isEating")) break; // Beklenmedik durumlarda durdur
 
                     aweboPetObject.transform.position = Vector3.MoveTowards(
                         aweboPetObject.transform.position,
@@ -243,12 +276,13 @@ public class PetManager : MonoBehaviour
                     );
                     if (targetPosition.x > aweboPetObject.transform.position.x)
                     {
-                        aweboPetObject.transform.localScale = new Vector3(1, 1, 1); // Sağa bak
+                        aweboPetObject.transform.localScale = new Vector3(4, 4, 1); // Sağ bak
                     }
                     else
                     {
-                        aweboPetObject.transform.localScale = new Vector3(-1, 1, 1); // Sola bak
+                        aweboPetObject.transform.localScale = new Vector3(-4, 4, 1); // Sola bak
                     }
+
                     yield return null;
                 }
 
@@ -400,12 +434,36 @@ public class PetManager : MonoBehaviour
                 weight = Mathf.Clamp(weight + (excess * 0.5f), 0, 200);
                 Debug.Log($"<color=red>Fazla yemek! Kilo +{excess * 0.5f}</color>");
             }
-
+            // Yemek yeme animasyonunu başlat
+            if (petAnimator != null)
+            {
+                petAnimator.SetBool("isEating", true);
+                StartCoroutine(ResetEatingAnimation());
+            }
             Debug.Log($"<color=green>{foodType} verildi!</color>");
         }
     }
 
+    IEnumerator ResetEatingAnimation()
+    {
+        float timer = 0f;
+        AnimatorStateInfo stateInfo = petAnimator.GetCurrentAnimatorStateInfo(0);
+        float animationLength = stateInfo.length;
 
+        // Maksimum bekleme süresi = animasyon süresi + 0.1sn güvenlik payı
+        while (timer < animationLength + 0.1f)
+        {
+            timer += Time.deltaTime;
+
+            // Loop'suz animasyonlarda erken çıkış
+            if (stateInfo.normalizedTime >= 1.0f) break;
+
+            yield return null;
+            stateInfo = petAnimator.GetCurrentAnimatorStateInfo(0);
+        }
+
+        petAnimator.SetBool("isEating", false);
+    }
     public void Clean()
     {
         if (!isGamePaused && hasPooped)
@@ -420,10 +478,20 @@ public class PetManager : MonoBehaviour
     {
         if (!isGamePaused && !isSleeping)
         {
-            isGamePaused = true;
-            minigameManager.StartMinigame();
-            Debug.Log("<color=magenta>Oyun oynandı!</color>");
+           isGamePaused = true;
+
+           SceneManager.LoadScene("minigame", LoadSceneMode.Additive);
+           
+            
+           
         }
+    }
+
+    public void ToggleCameraAndUi(bool Parametre)
+    { 
+    
+      mainCamera.SetActive(Parametre);
+        mainCanvas.SetActive(Parametre);
     }
 
     public void StartSleeping()
