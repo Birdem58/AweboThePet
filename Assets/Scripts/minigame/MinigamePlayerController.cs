@@ -43,7 +43,15 @@ public class PlayerController : MonoBehaviour
             coyoteTimeCounter = 0f;
         }
 
-        
+        if (moveInput.x > 0)
+        {
+            transform.localScale = new Vector3(2,2, 2); // Saða bakýyor
+        }
+        else if (moveInput.x < 0)
+        {
+            transform.localScale = new Vector3(-2, 2, 2); // Sola bakýyor
+        }
+
     }
 
     private void FixedUpdate()

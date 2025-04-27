@@ -7,6 +7,11 @@ public class MinigameController : MonoBehaviour
     public GameObject[] mapPrefabs; // 0: Map1, 1: Map2
     private GameObject currentMap;
 
+    public AudioSource musicSource;
+    public AudioClip map1Music;
+    public AudioClip map2Music;
+    public AudioClip collectSound;
+
     public GameObject player;
     private int collectibleCount;
     private bool minigameRunning = false;
@@ -37,6 +42,19 @@ public class MinigameController : MonoBehaviour
         int randomIndex = Random.Range(0, mapPrefabs.Length);
         currentMap = Instantiate(mapPrefabs[randomIndex], Vector3.zero, Quaternion.identity);
 
+        // Müzik seçimi
+        if (randomIndex == 0)
+        {
+            musicSource.clip = map1Music;
+        }
+        else if (randomIndex == 1)
+        {
+            musicSource.clip = map2Music;
+        }
+
+        musicSource.loop = true;
+        musicSource.Play();
+
         collectibleCount = currentMap.GetComponentsInChildren<Collecible>().Length;
         player.SetActive(true); // Karakteri aktif et
         minigameRunning = true;
@@ -49,6 +67,9 @@ public class MinigameController : MonoBehaviour
     {
         minigameSuccess = success;
         minigameRunning = false;
+
+        // Müziði durdur
+        musicSource.Stop();
 
         if (currentMap != null)
         {
@@ -71,5 +92,6 @@ public class MinigameController : MonoBehaviour
     public void CollectibleCollected()
     {
         collectibleCount--;
+        musicSource.PlayOneShot(collectSound);
     }
 }
