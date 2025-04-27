@@ -6,7 +6,7 @@ using static PetManager;
 public class UIManager : MonoBehaviour
 {
     public GameObject popup_Panel;
-
+    public GameObject lightGameObject;
     public GameObject foodOptions;
     public GameObject sleepOptions;
     public GameObject funOptions;
@@ -87,19 +87,21 @@ public class UIManager : MonoBehaviour
 
     // Þu anda Popup paneli içindeki özel butonlara baðlanacak örnek fonksiyonlar:
 
- 
+
 
     public void OnLightOnButtonClicked()
     {
         Debug.Log("Iþýk açýldý.");
-        // Iþýðý aç
+        PetManager.Instance.isLightOff = false; 
+        lightGameObject.SetActive(false); 
         popup_Panel.SetActive(false);
     }
 
     public void OnLightOffButtonClicked()
     {
         Debug.Log("Iþýk kapandý.");
-        // Iþýðý kapat
+        PetManager.Instance.isLightOff = true; 
+        lightGameObject.SetActive(true); 
         popup_Panel.SetActive(false);
     }
 

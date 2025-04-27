@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using TMPro;
@@ -10,7 +10,7 @@ public class PetManager : MonoBehaviour
     
     public static PetManager Instance { get; private set; }
 
-    // Pet Statlarý
+    // Pet StatlarÄ±
     [Header("Pet Stats")]
     [Range(0, 100)] public float health = 100f;
     [Range(0, 100)] public float happiness = 100f;
@@ -18,12 +18,21 @@ public class PetManager : MonoBehaviour
     [Range(0, 100)] public float energy = 100f;
     [Header("Weight System")]
     [Range(0, 200)] public float weight = 50f;
-    // Decay Hýzlarý
+    // Decay HÄ±zlarÄ±
     [Header("Decay Rates")]
     public float hungerDecayRate = 0.5f;
     public float happinessDecayRate = 0.3f;
     public float hygieneDecayRate = 0.2f;
     public float energyDecayRate = 0.4f;
+
+    [Header("Sleep Settings")]
+    public float sleepHappiness = 50f; 
+    public float energyRecoveryRate = 15f;
+    public bool isLightOff;
+    public float warningInterval = 1f;       
+    private Coroutine sleepWarningCoroutine;
+    private bool isWarningActive = false;
+
 
     // Kaka Sistemi
     [Header("Poop Settings")]
@@ -35,22 +44,24 @@ public class PetManager : MonoBehaviour
     public float poopSpawnRadius = 1f;
     public float penaltyPerPoop = 2f; 
     private HashSet<ShitController> activePoops = new HashSet<ShitController>();
-        private float baseHygieneDecay;
+    private float baseHygieneDecay;
 
     public GameObject skullSprite;
 
+    [Header("Animation Settings")]
+    public Animator petAnimator;
     [Header("Fire Settings")]
-    public GameObject[] firePrefabs; // Inspector'a alev prefab'larýný sürükleyin
-    public int maxFireCount = 5; // Maksimum alev sayýsý
-    public Vector2 xSpawnRange = new Vector2(-5f, 5f); // X spawn sýnýrlarý
-    public Vector2 ySpawnRange = new Vector2(-3f, 3f); // Y spawn sýnýrlarý
+    public GameObject[] firePrefabs; // Inspector'a alev prefab'larÄ±nÄ± sÃ¼rÃ¼kleyin
+    public int maxFireCount = 5; // Maksimum alev sayÄ±sÄ±
+    public Vector2 xSpawnRange = new Vector2(-5f, 5f); // X spawn sÄ±nÄ±rlarÄ±
+    public Vector2 ySpawnRange = new Vector2(-3f, 3f); // Y spawn sÄ±nÄ±rlarÄ±
     private List<GameObject> activeFires = new List<GameObject>();
 
     // Zaman ve Durumlar
     [Header("Game Timing")]
-    public float dayDuration = 300f; // 5 DAKÝKA = 24 SAAT
-    public float initialHour = 9f; // Baþlangýç saati (09:00)
-    public float sleepTimeMultiplier = 3f; // Uykuda zaman hýzý
+    public float dayDuration = 300f; // 5 DAKÄ°KA = 24 SAAT
+    public float initialHour = 9f; // BaÅŸlangÄ±Ã§ saati (09:00)
+    public float sleepTimeMultiplier = 3f; // Uykuda zaman hÄ±zÄ±
     private float gameTime;
     public bool isSleeping = false;
     public bool isGamePaused = false;
@@ -69,7 +80,7 @@ public class PetManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        // Baþlangýç saatini ayarla
+        // BaÅŸlangÄ±Ã§ saatini ayarla
         gameTime = (initialHour / 24f) * dayDuration;
     }
 
@@ -84,7 +95,13 @@ public class PetManager : MonoBehaviour
     void Update()
     {
         if (isGamePaused) return;
-
+        if (petAnimator != null && !isWarningActive)
+        {
+            
+            petAnimator.SetFloat("happiness", happiness);                  
+          
+            petAnimator.SetBool("awake", !isSleeping);
+        }
         if (!isSleeping)
         {
             UpdateNeeds();
@@ -95,7 +112,8 @@ public class PetManager : MonoBehaviour
             }
             skullSprite.SetActive(hygiene <= 25f);
         }
-        
+        HandleSleepCycle();
+        HandleSleepWarning();
         UpdateTimeDisplay();
     }
 
@@ -107,7 +125,7 @@ public class PetManager : MonoBehaviour
 
         if (gameTime >= dayDuration) gameTime = 0;
 
-        // Uyku kontrolü (22:00-06:00 arasý veya enerji sýfýr)
+        // Uyku kontrolÃ¼ (22:00-06:00 arasÄ± veya enerji sÄ±fÄ±r)
         float currentHour = (gameTime / dayDuration) * 24f;
         if ((currentHour >= 22f || currentHour <= 6f) && !isSleeping)
         {
@@ -140,18 +158,31 @@ public class PetManager : MonoBehaviour
         hygiene = Mathf.Clamp(hygiene - hygieneDecayRate * Time.deltaTime, 0, 100);
         energy = Mathf.Clamp(energy - energyDecayRate * Time.deltaTime, 0, 100);
 
-        if (energy <= 0 && !isSleeping)
+        if (energy <= 10 && !isSleeping)
         {
             StartSleeping();
         }
     }
+    void HandleSleepCycle()
+    {
+        
+        if (energy <= 10 && !isLightOff && !isSleeping)
+        {
+            happiness = Mathf.Clamp(happiness - (happinessDecayRate * 5 * Time.deltaTime), 0, 100);
+        }
 
+      
+        if (isSleeping && energy >= 100f)
+        {
+            WakeUp();
+        }
+    }
     void SpawnFire()
     {
         Vector3 spawnPos = new Vector3(
             Random.Range(xSpawnRange.x, xSpawnRange.y),
             Random.Range(ySpawnRange.x, ySpawnRange.y),
-            -2f // Sabit Z düzlemi
+            -2f // Sabit Z dÃ¼zlemi
         );
 
         GameObject selectedFire = firePrefabs[Random.Range(0, firePrefabs.Length)];
@@ -180,11 +211,43 @@ public class PetManager : MonoBehaviour
 
             if (!isSleeping && !isGamePaused)
             {
-                // Kaka spawnla ve durumu güncelle
+                // Kaka spawnla ve durumu gÃ¼ncelle
                 SpawnShit();
                 hasPooped = true;
-                Debug.Log("<color=red>Pet kaka yaptý!</color>");
+                Debug.Log("<color=red>Pet kaka yaptÄ±!</color>");
             }
+        }
+    }
+    void HandleSleepWarning()
+    {
+        bool needWarning = energy <= 10f && !isLightOff && !isSleeping;
+
+        if (needWarning && sleepWarningCoroutine == null)
+        {
+            isWarningActive = true;
+            sleepWarningCoroutine = StartCoroutine(SleepWarningBlink());
+        }
+        else if (!needWarning && sleepWarningCoroutine != null)
+        {
+            StopCoroutine(sleepWarningCoroutine);
+            sleepWarningCoroutine = null;
+            isWarningActive = false;
+            // uyarÄ± bitince kesin awake pozisyonuna dÃ¶n
+            petAnimator.SetBool("awake", true);
+        }
+    }
+
+    IEnumerator SleepWarningBlink()
+    {
+        while (true)
+        {
+            // â€œuyku zamanÄ± geldiâ€ uyarÄ±sÄ±: sleep animasyonuna gir
+            petAnimator.SetBool("awake", false);
+            yield return new WaitForSeconds(warningInterval);
+
+            // sonra hemen awakeâ€™e Ã§Ä±k
+            petAnimator.SetBool("awake", true);
+            yield return new WaitForSeconds(warningInterval);
         }
     }
 
@@ -229,7 +292,7 @@ public class PetManager : MonoBehaviour
 
     void UpdateHygieneDecay()
     {
-        // Ceza = Aktif ve 5 saniyeyi geçmiþ poop sayýsý * penaltyPerPoop
+        // Ceza = Aktif ve 5 saniyeyi geÃ§miÅŸ poop sayÄ±sÄ± * penaltyPerPoop
         int penalizedPoops = activePoops.Count(poop => poop.penaltyApplied);
         hygieneDecayRate = baseHygieneDecay + (penalizedPoops * penaltyPerPoop);
     }
@@ -240,7 +303,7 @@ public class PetManager : MonoBehaviour
         Debug.Log("<color=blue>Uyku modu aktif!</color>");
         while (isSleeping)
         {
-            energy = Mathf.Clamp(energy + 15f * Time.deltaTime, 0, 100);
+            energy = Mathf.Clamp(energy + energyRecoveryRate * Time.deltaTime, 0, 100);
             yield return null;
         }
         Debug.Log("<color=yellow>Uyku modu pasif!</color>");
@@ -252,7 +315,7 @@ public class PetManager : MonoBehaviour
     {
         if (!isGamePaused && !isSleeping)
         {
-            float healthBeforeClamp = health; // Clamp öncesi deðer
+            float healthBeforeClamp = health; // Clamp Ã¶ncesi deÄŸer
 
             switch (foodType)
             {
@@ -266,11 +329,11 @@ public class PetManager : MonoBehaviour
                     break;
             }
 
-            // 1. Health ve Happiness'ý 0-100 arasýnda sýnýrla
+            // 1. Health ve Happiness'Ä± 0-100 arasÄ±nda sÄ±nÄ±rla
             health = Mathf.Clamp(health, 0, 100);
             happiness = Mathf.Clamp(happiness, 0, 100);
 
-            // 2. Health 100'ü geçerse kilo artýþý (Clamp öncesi kontrol)
+            // 2. Health 100'Ã¼ geÃ§erse kilo artÄ±ÅŸÄ± (Clamp Ã¶ncesi kontrol)
             if (healthBeforeClamp > 100f)
             {
                 float excess = healthBeforeClamp - 100f;
@@ -299,16 +362,25 @@ public class PetManager : MonoBehaviour
         {
             isGamePaused = true;
             minigameManager.StartMinigame();
-            Debug.Log("<color=magenta>Oyun oynandý!</color>");
+            Debug.Log("<color=magenta>Oyun oynandÄ±!</color>");
         }
     }
 
     public void StartSleeping()
     {
-        if (!isSleeping)
+        
+        if (!isSleeping && isLightOff)
         {
+            if (sleepWarningCoroutine != null)
+            {
+                StopCoroutine(sleepWarningCoroutine);
+                sleepWarningCoroutine = null;
+                isWarningActive = false;
+                petAnimator.SetBool("awake", true);
+            }
+
             isSleeping = true;
-            StopAllCoroutines();
+            StopAllCoroutines();        
             StartCoroutine(SleepRoutine());
         }
     }
@@ -317,7 +389,7 @@ public class PetManager : MonoBehaviour
     {
         isSleeping = false;
         StartCoroutine(PoopRoutine());
-        Debug.Log("<color=yellow>Uyandýrýldý!</color>");
+        Debug.Log("<color=yellow>UyandÄ±rÄ±ldÄ±!</color>");
     }
     #endregion
 

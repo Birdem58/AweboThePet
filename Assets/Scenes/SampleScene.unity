@@ -517,6 +517,10 @@ MonoBehaviour:
   happinessDecayRate: 0.3
   hygieneDecayRate: 0.2
   energyDecayRate: 0.4
+  sleepHappiness: 50
+  energyRecoveryRate: 15
+  isLightOff: 0
+  warningInterval: 0.5
   minPoopInterval: 5
   maxPoopInterval: 10
   shitPrefabs:
@@ -526,6 +530,7 @@ MonoBehaviour:
   poopSpawnRadius: 1
   penaltyPerPoop: 2
   skullSprite: {fileID: 1190287394}
+  petAnimator: {fileID: 2094687155}
   firePrefabs:
   - {fileID: 1307132340850531236, guid: 53e1f356fe89cdd40bde5a56ecb37ca6, type: 3}
   - {fileID: 4656665840377836976, guid: 19d2f239a8b2b4044ab59ab4c7c16dc1, type: 3}
@@ -541,6 +546,81 @@ MonoBehaviour:
   timeText: {fileID: 1274591064}
   showDebugTime: 1
   minigameManager: {fileID: 1257875142}
+--- !u!1 &217956097
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 217956098}
+  - component: {fileID: 217956100}
+  - component: {fileID: 217956099}
+  m_Layer: 5
+  m_Name: LightsOff
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &217956098
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 217956097}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 657771344}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -2.968933}
+  m_SizeDelta: {x: -640, y: -516.543}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &217956099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 217956097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.75686276}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &217956100
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 217956097}
+  m_CullTransparentMesh: 1
 --- !u!1 &218423292
 GameObject:
   m_ObjectHideFlags: 0
@@ -3198,6 +3278,11 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!95 &2094687155 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 91808010465666692, guid: 131f8c753c5d55844803d37cb68e8601, type: 3}
+  m_PrefabInstance: {fileID: 844853009}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2102562961
 GameObject:
   m_ObjectHideFlags: 0
@@ -3477,6 +3562,10 @@ PrefabInstance:
       propertyPath: popup_Panel
       value: 
       objectReference: {fileID: 880878313}
+    - target: {fileID: 7965708013302536588, guid: dec7b248c9d891d438f52dff8e4fa26f, type: 3}
+      propertyPath: lightGameObject
+      value: 
+      objectReference: {fileID: 217956097}
     - target: {fileID: 8015680125845829839, guid: dec7b248c9d891d438f52dff8e4fa26f, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -3582,6 +3671,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8015680125845829839, guid: dec7b248c9d891d438f52dff8e4fa26f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 473710254}
+    - targetCorrespondingSourceObject: {fileID: 8015680125845829839, guid: dec7b248c9d891d438f52dff8e4fa26f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 217956098}
     - targetCorrespondingSourceObject: {fileID: 2260603815055425582, guid: dec7b248c9d891d438f52dff8e4fa26f, type: 3}
       insertIndex: 1
       addedObject: {fileID: 540651488}
