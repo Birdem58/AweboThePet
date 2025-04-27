@@ -18,6 +18,13 @@ public class PetManager : MonoBehaviour
     [Range(0, 100)] public float energy = 100f;
     [Header("Weight System")]
     [Range(0, 200)] public float weight = 50f;
+
+    [Header("Movement Settings")]
+    public float moveSpeed = 2f;
+    public Vector2 moveRangeX = new Vector2(-5f, 5f); // X hareket sınırları
+    public Vector2 moveRangeY = new Vector2(-3f, 3f); // Y hareket sınırları
+    private Vector3 targetPosition;
+    private bool isMoving = false;
     // Decay Hızları
     [Header("Decay Rates")]
     public float hungerDecayRate = 0.5f;
@@ -89,6 +96,7 @@ public class PetManager : MonoBehaviour
         baseHygieneDecay = hygieneDecayRate; 
         skullSprite.SetActive(false); 
         StartCoroutine(PoopRoutine());
+        StartCoroutine(RandomMovementRoutine());
         UpdateTimeDisplay();
     }
 
@@ -111,6 +119,11 @@ public class PetManager : MonoBehaviour
                 SpawnFire();
             }
             skullSprite.SetActive(hygiene <= 25f);
+        }
+        if (isSleeping || isGamePaused)
+        {
+            petAnimator.SetBool("isWalking", false);
+            isMoving = false;
         }
         HandleSleepCycle();
         HandleSleepWarning();
@@ -202,6 +215,53 @@ public class PetManager : MonoBehaviour
     #endregion
 
     #region Routinler
+    IEnumerator RandomMovementRoutine()
+    {
+        while (true)
+        {
+            if (!isSleeping && !isGamePaused && !isMoving)
+            {
+                // Rastgele hedef pozisyon belirle
+                targetPosition = new Vector3(
+                    Random.Range(moveRangeX.x, moveRangeX.y),
+                    Random.Range(moveRangeY.x, moveRangeY.y),
+                    aweboPetObject.transform.position.z
+                );
+
+                isMoving = true;
+                petAnimator.SetBool("isWalking", true);
+
+                // Hareketi gerçekleştir
+                while (Vector3.Distance(aweboPetObject.transform.position, targetPosition) > 0.1f)
+                {
+                    if (isSleeping || isGamePaused) break; // Beklenmedik durumlarda durdur
+
+                    aweboPetObject.transform.position = Vector3.MoveTowards(
+                        aweboPetObject.transform.position,
+                        targetPosition,
+                        moveSpeed * Time.deltaTime
+                    );
+                    if (targetPosition.x > aweboPetObject.transform.position.x)
+                    {
+                        aweboPetObject.transform.localScale = new Vector3(1, 1, 1); // Sağa bak
+                    }
+                    else
+                    {
+                        aweboPetObject.transform.localScale = new Vector3(-1, 1, 1); // Sola bak
+                    }
+                    yield return null;
+                }
+
+                // Hareket tamamlandığında
+                petAnimator.SetBool("isWalking", false);
+                isMoving = false;
+
+                // Rastgele bekleme süresi (2-5 saniye)
+                yield return new WaitForSeconds(Random.Range(2f, 5f));
+            }
+            yield return null;
+        }
+    }
     IEnumerator PoopRoutine()
     {
         while (true)
