@@ -11,7 +11,8 @@ public class MinigameController : MonoBehaviour
     public AudioClip map1Music;
     public AudioClip map2Music;
     public AudioClip collectSound;
-
+    public GameObject scoreManager;
+    public GameObject miniGameUI;
     public GameObject player;
     private int collectibleCount;
     private bool minigameRunning = false;
@@ -54,7 +55,8 @@ public class MinigameController : MonoBehaviour
 
         musicSource.loop = true;
         musicSource.Play();
-
+        miniGameUI.SetActive(true);
+        scoreManager.SetActive(true);
         collectibleCount = currentMap.GetComponentsInChildren<Collecible>().Length;
         player.SetActive(true); // Karakteri aktif et
         minigameRunning = true;
@@ -68,15 +70,10 @@ public class MinigameController : MonoBehaviour
         minigameSuccess = success;
         minigameRunning = false;
 
-        // Müziði durdur
-        musicSource.Stop();
 
-        if (currentMap != null)
-        {
-            Destroy(currentMap);
-        }
+        StartCoroutine(EndMiniGameRoutine());
 
-        player.SetActive(false);
+        
 
         if (success)
         {
@@ -86,6 +83,23 @@ public class MinigameController : MonoBehaviour
         else
         {
             Debug.Log("Minigame baþarýsýz!");
+        }
+
+        
+    }
+
+    private IEnumerator EndMiniGameRoutine()
+    {
+        yield return new WaitForSeconds(1f);
+        // Müziði durdur
+        musicSource.Stop();
+
+        player.SetActive(false);
+
+        // Haritayý yok et
+        if (currentMap != null)
+        {
+            Destroy(currentMap);
         }
     }
 
