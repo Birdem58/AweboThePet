@@ -10,7 +10,7 @@ public class ScoreManager : MonoBehaviour
 
     private void Awake()
     {
-        scoreText.text = "Score: 0";
+        scoreText.text = "Score : 0";
         if (instance == null)
         {
             instance = this;
@@ -20,6 +20,6 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(int amount)
     {
         score += amount;
-        scoreText.text = "Score: " + score.ToString();
+        scoreText.text = "Score : " + score.ToString();
     }
 }

@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public float jumpForce = 7f;
+    private Animator animator;
     private Rigidbody2D rb;
     private Vector2 moveInput;
 
@@ -17,12 +18,17 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
         moveInput.x = Input.GetAxisRaw("Horizontal");
         moveInput.y = 0;
+
+        float speed = Mathf.Abs(rb.velocity.x);
+
+        animator.SetFloat("velocity", speed);
 
         // Yere basýyor mu kontrolü
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
