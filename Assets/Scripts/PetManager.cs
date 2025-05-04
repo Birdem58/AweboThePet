@@ -88,7 +88,7 @@ public class PetManager : MonoBehaviour
 
     IEnumerator PlayAweboSoundRandomly()
     {
-        while (true)
+        while (!isGamePaused)
         {
             // Rastgele bir bekleme süresi belirle
             float randomInterval = Random.Range(minAweboInterval, maxAweboInterval);
@@ -276,11 +276,11 @@ public class PetManager : MonoBehaviour
                     );
                     if (targetPosition.x > aweboPetObject.transform.position.x)
                     {
-                        aweboPetObject.transform.localScale = new Vector3(4, 4, 1); // Sağ bak
+                        aweboPetObject.transform.localScale = new Vector3(6, 6, 1); // Sağ bak
                     }
                     else
                     {
-                        aweboPetObject.transform.localScale = new Vector3(-4, 4, 1); // Sola bak
+                        aweboPetObject.transform.localScale = new Vector3(-6, 6, 1); // Sola bak
                     }
 
                     yield return null;
